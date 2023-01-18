@@ -33,11 +33,12 @@ this.isLoading = true;
 } else {
   this.authService.signup(email, password).subscribe(resData =>{
     console.log(resData);
-    this.error = 'An error occured!';
   this.isLoading = false;
   },
-   error =>{
-  console.log(error);
+   errorMessage => =>{
+  console.log(errorMessage);
+ this.error = errorMessage;
+  this.error = 'An error occured!';
   this.isLoading = false;
 
   }
