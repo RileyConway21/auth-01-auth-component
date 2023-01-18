@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth.sevice';
-
 import { AuthService } from './auth.sevice';
 
 
@@ -10,11 +9,14 @@ import { AuthService } from './auth.sevice';
 })
 export class AuthComponent {
   isLoginMode = true;
+isLoading = false;
+error: string = null;
 
   constructor(private authService; AuthService) {}
 
   onswitchMode() {
     this.isLoginMode = !this.isLoginMode;
+
   }
 onSubmit(form: NgForm) {
   if (!form.valid) {
@@ -23,15 +25,21 @@ onSubmit(form: NgForm) {
  const email = form.value.email;
  const password = form.value.password;
 
+this.isLoading = true;
+
+
  if (this.isLoginMode){
 // ...
 } else {
   this.authService.signup(email, password).subscribe(resData =>{
     console.log(resData);
-  
+    this.error = 'An error occured!';
+  this.isLoading = false;
   },
    error =>{
   console.log(error);
+  this.isLoading = false;
+
   }
   );
 
