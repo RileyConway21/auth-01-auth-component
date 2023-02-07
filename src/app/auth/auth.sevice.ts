@@ -5,7 +5,7 @@ import { Subject, throwError } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
 
-interface AuthResponseData {
+export interface AuthResponseData {
     kind: string;
     idToken: string;
     email; string;
@@ -18,6 +18,9 @@ interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  signup(email: any, password: any): import("rxjs").Observable<AuthResponseData> {
+    throw new Error('Method not implemented.');
+  }
 user = new Subject<User>();
 
     constructor(private http: HttpClient) { }
