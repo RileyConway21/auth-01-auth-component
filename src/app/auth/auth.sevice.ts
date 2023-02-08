@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
 import { catchError, tap } from "rxjs/operators";
-import { Subject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
 
@@ -21,7 +21,8 @@ export class AuthService {
   signup(email: any, password: any): import("rxjs").Observable<AuthResponseData> {
     throw new Error('Method not implemented.');
   }
-user = new Subject<User>();
+user = new BehaviorSubject<User>(null);
+
 
     constructor(private http: HttpClient) { }
 
