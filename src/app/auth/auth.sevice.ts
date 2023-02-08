@@ -4,6 +4,7 @@ import { catchError, tap } from "rxjs/operators";
 import { BehaviorSubject, throwError } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
+import { Router } from "@angular/router";
 
 export interface AuthResponseData {
     kind: string;
@@ -24,7 +25,7 @@ export class AuthService {
 user = new BehaviorSubject<User>(null);
 
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, _private: Router) { }
 
     singup(email: string, password: string) {
         return this.http.post<AuthResponseData>(
@@ -50,6 +51,11 @@ user = new BehaviorSubject<User>(null);
 
             }
         ).pipe(catchError(this.handleError));
+    }
+
+    logout() {
+        this.user.next(null);
+        this.router.navigate(['/auth'])
     }
 
     private handleAuthentication (email: string, userId: string, token: string, expiresin: number) {
