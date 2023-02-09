@@ -19,6 +19,7 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+    router: any;
   signup(email: any, password: any): import("rxjs").Observable<AuthResponseData> {
     throw new Error('Method not implemented.');
   }
@@ -52,6 +53,24 @@ user = new BehaviorSubject<User>(null);
             }
         ).pipe(catchError(this.handleError));
     }
+    
+    autoLogin() {
+        const userData: {
+            email: string;
+            id: string;
+            _token: string;
+            _tokenExpirationDate: string;
+        } = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) {
+            return; 
+        }
+
+        const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+
+        if (loadedUser.token) {
+            this.user.next(loadedUser);
+        }
+    }
 
     logout() {
         this.user.next(null);
@@ -62,6 +81,7 @@ user = new BehaviorSubject<User>(null);
         const expirationData = new Date(new Date().getTime() + expiresin * 1000); 
         const user = new User(email, userId, token, expirationData);
         this.user.next(user);
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 
     private handleError(errorRes: HttpErrorResponse) {
